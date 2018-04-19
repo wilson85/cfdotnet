@@ -8,6 +8,64 @@ namespace CfSharp.AutoScaling
 
         public LaunchConfigurationProperties Properties { get; set; } = new LaunchConfigurationProperties();
 
+        public LaunchConfiguration InstanceMonitoring(bool instanceMonitoring)
+        {
+            Properties.InstanceMonitoring = instanceMonitoring;
+            return this;
+        }
+
+        public LaunchConfiguration InstanceType(IEntityValue instanceType) => InstanceType(instanceType.Value);
+
+        public LaunchConfiguration InstanceType(string instanceType) => InstanceType((object)instanceType);
+
+        public LaunchConfiguration InstanceType(object instanceType)
+        {
+            Properties.InstanceType = instanceType;
+            return this;
+        }
+
+        public LaunchConfiguration IamInstanceProfile(string iamInstanceProfile)
+        {
+            Properties.IamInstanceProfile = iamInstanceProfile;
+            return this;
+        }
+
+        public LaunchConfiguration ImageId(IEntityValue imageId) => ImageId(imageId.Value);
+
+        public LaunchConfiguration ImageId(object imageId)
+        {
+            Properties.ImageId = imageId;
+            return this;
+        }
+
+        public LaunchConfiguration SecurityGroups(string securityGroup) => SecurityGroups((object)securityGroup);
+
+        public LaunchConfiguration SecurityGroups(object securityGroup)
+        {
+            Properties.SecurityGroups.Add(securityGroup);
+            return this;
+        }
+
+        public LaunchConfiguration SecurityGroups(IEntityValue securityGroup) => SecurityGroups(securityGroup.Value);
+
+        public LaunchConfiguration UserData(string userData) => UserData((object)userData);
+
+        public LaunchConfiguration KeyName(IEntityValue keyName) => KeyName(keyName.Value);
+
+        public LaunchConfiguration KeyName(string keyName) => KeyName((object)keyName);
+
+        public LaunchConfiguration KeyName(object keyName)
+        {
+            Properties.KeyName = keyName;
+            return this;
+        }
+
+        public LaunchConfiguration UserData(object userData)
+        {
+            Properties.UserData = userData;
+            return this;
+        }
+
         public class LaunchConfigurationProperties
         {
             public bool AssociatePublicIpAddress { get; set; }
