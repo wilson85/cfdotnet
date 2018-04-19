@@ -8,7 +8,22 @@ namespace CfSharp
     {
         public Dictionary<string, IEntity> Resources { get; } = new Dictionary<string, IEntity>();
 
-        public Dictionary<string, StackParameter> Parameters = new Dictionary<string, StackParameter>() { { "AWS::StackName", new StackParameter("AWS::StackName", "Pseudo") } };
+        public Dictionary<string, StackParameter> Parameters = new Dictionary<string, StackParameter>();
+
+        /// <summary>
+        /// This is a list of inbuilt parameters which we need available but we dont want to output into our json
+        /// </summary>
+        private readonly Dictionary<string, StackParameter> _pseudoParameters = new Dictionary<string, StackParameter>()
+        {
+            { "AWS::StackName", new StackParameter("AWS::StackName", "Pseudo") }
+        };
+
+        private readonly string _name;
+
+        public Stack(string name)
+        {
+            _name = name;
+        }
 
         public string ToJson()
         {
@@ -18,9 +33,9 @@ namespace CfSharp
             });
         }
 
-        public Stack LoadBalancer(string name, Action<LoadBalancerEntity> config)
+        public Stack LoadBalancer(string name, Action<LoadBalancer> config)
         {
-            LoadBalancerEntity loadBalancer = new LoadBalancerEntity(name, this);
+            LoadBalancer loadBalancer = new LoadBalancer(name, this);
             config(loadBalancer);
             return this;
         }
@@ -35,7 +50,7 @@ namespace CfSharp
 
         public StackParameter GetParameter(string name)
         {
-            return Parameters[name];
+            return Parameters[name] ?? _pseudoParameters[name];
         }
 
         public TargetGroup TargetGroup(string name)
@@ -69,22 +84,22 @@ namespace CfSharp
 
     public class StackParameter : IEntityValue
     {
-        public string Type { get; set; }
+        public virtual string Type { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? MinValue { get; set; }
+        public virtual int? MinValue { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? MaxValue { get; set; }
+        public virtual int? MaxValue { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Default { get; set; }
+        public virtual string Default { get; set; }
 
         [JsonIgnore]
-        public object Value
+        public virtual object Value
         {
             get
             {
@@ -93,7 +108,7 @@ namespace CfSharp
         }
 
         [JsonIgnore]
-        public string Name { get; }
+        public virtual string Name { get; }
 
         public StackParameter(string name, string type)
         {
