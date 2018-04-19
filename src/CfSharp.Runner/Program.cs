@@ -16,6 +16,7 @@ namespace CfSharp.Runner
             string json = stack.ToJson();
             
             AmazonCloudFormationClient client = new AmazonCloudFormationClient(RegionEndpoint.EUWest1);
+
             try
             {
                 var result = await client.ValidateTemplateAsync(new ValidateTemplateRequest()

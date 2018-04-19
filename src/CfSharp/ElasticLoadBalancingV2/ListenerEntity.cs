@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace CfSharp
 {
-    public class ListenerEntity : IEntity
+    public class Listener : IEntity
     {
         private readonly string _name;
         private readonly Stack _stack;
 
-        public ListenerEntity(Stack stack, string name)
+        public Listener(Stack stack, string name)
         {
             _name = name;
             stack.Resources.Add(_name, this);
@@ -19,48 +19,48 @@ namespace CfSharp
 
         public ListenerProperties Properties { get; set; } = new ListenerProperties();
 
-        public ListenerEntity Certificate(string arn)
+        public Listener Certificate(string arn)
             => Certificate(new StringEntityValue(arn));
 
-        public ListenerEntity Certificate(IEntityValue value)
+        public Listener Certificate(IEntityValue value)
         {
             Properties.Certificates.Add(new ListenerCertificate(value));
 
             return this;
         }
 
-        public ListenerEntity LoadBalancerArn(IEntityValue arn)
+        public Listener LoadBalancerArn(IEntityValue arn)
          => LoadBalancerArn(arn.Value);
 
-        public ListenerEntity LoadBalancerArn(object arn)
+        public Listener LoadBalancerArn(object arn)
         {
             Properties.LoadBalancerArn = arn;
 
             return this;
         }
 
-        public ListenerEntity DefaultAction(IEntityValue targetGroupArn, object type)
+        public Listener DefaultAction(IEntityValue targetGroupArn, object type)
         {
             Properties.DefaultActions = new ListenerAction(targetGroupArn.Value, type);
 
             return this;
         }
 
-        public ListenerEntity Port(int port)
+        public Listener Port(int port)
         {
             Properties.Port = port;
 
             return this;
         }
 
-        public ListenerEntity Protocol(Protocol protocol)
+        public Listener Protocol(Protocol protocol)
         {
             Properties.Protocol = Enum.GetName(typeof(Protocol), protocol);
 
             return this;
         }
 
-        public ListenerEntity Rules(string name, Action<ListenerRule> config)
+        public Listener Rules(string name, Action<ListenerRule> config)
         {
             var rule = new ListenerRule(name,_stack);
             config(rule);

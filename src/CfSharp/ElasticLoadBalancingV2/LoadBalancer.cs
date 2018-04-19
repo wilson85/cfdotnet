@@ -47,9 +47,9 @@ namespace CfSharp
             return this;
         }
 
-        public LoadBalancer Listener(string name, Action<ListenerEntity> config)
+        public LoadBalancer Listener(string name, Action<Listener> config)
         {
-            ListenerEntity listener = new ListenerEntity(_stack, name);
+            Listener listener = new Listener(_stack, name);
 
             config(listener);
 

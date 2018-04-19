@@ -29,7 +29,8 @@ namespace CfSharp
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
             {
-                MaxDepth = 9999
+                MaxDepth = 9999,
+                NullValueHandling = NullValueHandling.Ignore
             });
         }
 
