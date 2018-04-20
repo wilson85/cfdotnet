@@ -1,12 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace CfSharp.AutoScaling
+namespace CfSharp
 {
-    public class LaunchConfiguration
+    public class LaunchConfiguration : IEntity, IEntityValue
     {
         public string Type { get; set; } = "AWS::AutoScaling::LaunchConfiguration";
 
         public LaunchConfigurationProperties Properties { get; set; } = new LaunchConfigurationProperties();
+
+        private readonly string _name;
+
+        public LaunchConfiguration(Stack stack, string name)
+        {
+            _name = name;
+            stack.Resources.Add(name, this);
+        }
 
         public LaunchConfiguration InstanceMonitoring(bool instanceMonitoring)
         {
@@ -14,7 +22,7 @@ namespace CfSharp.AutoScaling
             return this;
         }
 
-        public LaunchConfiguration InstanceType(IEntityValue instanceType) => InstanceType(instanceType.Value);
+        public LaunchConfiguration InstanceType(IEntityValue instanceType) => InstanceType(instanceType.GetValue());
 
         public LaunchConfiguration InstanceType(string instanceType) => InstanceType((object)instanceType);
 
@@ -30,7 +38,7 @@ namespace CfSharp.AutoScaling
             return this;
         }
 
-        public LaunchConfiguration ImageId(IEntityValue imageId) => ImageId(imageId.Value);
+        public LaunchConfiguration ImageId(IEntityValue imageId) => ImageId(imageId.GetValue());
 
         public LaunchConfiguration ImageId(object imageId)
         {
@@ -46,11 +54,11 @@ namespace CfSharp.AutoScaling
             return this;
         }
 
-        public LaunchConfiguration SecurityGroups(IEntityValue securityGroup) => SecurityGroups(securityGroup.Value);
+        public LaunchConfiguration SecurityGroups(IEntityValue securityGroup) => SecurityGroups(securityGroup.GetValue());
 
         public LaunchConfiguration UserData(string userData) => UserData((object)userData);
 
-        public LaunchConfiguration KeyName(IEntityValue keyName) => KeyName(keyName.Value);
+        public LaunchConfiguration KeyName(IEntityValue keyName) => KeyName(keyName.GetValue());
 
         public LaunchConfiguration KeyName(string keyName) => KeyName((object)keyName);
 
@@ -60,10 +68,26 @@ namespace CfSharp.AutoScaling
             return this;
         }
 
+        public LaunchConfiguration BlockDeviceMapping(LaunchConfigurationBlockDeviceMapping mapping)
+        {
+            Properties.BlockDeviceMappings.Add(mapping);
+            return this;
+        }
+
         public LaunchConfiguration UserData(object userData)
         {
             Properties.UserData = userData;
             return this;
+        }
+
+        public string GetName()
+        {
+            return _name;
+        }
+
+        public object GetValue()
+        {
+            return new EntityReference(_name);
         }
 
         public class LaunchConfigurationProperties
@@ -100,7 +124,22 @@ namespace CfSharp.AutoScaling
 
             public List<object> ClassicLinkVPCSecurityGroups { get; set; }
 
-            //"BlockDeviceMappings" : [BlockDeviceMapping, ... ],
+            public List<LaunchConfigurationBlockDeviceMapping> BlockDeviceMappings { get; set; } = new List<LaunchConfigurationBlockDeviceMapping>();
+        }
+
+        public class LaunchConfigurationBlockDeviceMapping
+        {
+            public object DeviceName { get; set; }
+            public Ebs Ebs { get; set; } = new Ebs();
+            public object NoDevice { get; set; }
+            public object VirtualName { get; set; }
+        }
+
+        public class Ebs
+        {
+            public object VolumeSize { get; set; }
+
+            public object VolumeType { get; set; }
         }
     }
 }

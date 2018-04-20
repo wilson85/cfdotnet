@@ -25,7 +25,7 @@ namespace CfSharp
         {
             foreach (var item in targetGroupArns)
             {
-                Properties.TargetGroupARNs.Add(item.Value);
+                Properties.TargetGroupARNs.Add(item.GetValue());
             }
 
             return this;
@@ -33,7 +33,7 @@ namespace CfSharp
 
         public AutoScalingGroup MaxSize(StackParameter maxCapacityParam)
         {
-            Properties.MaxSize = maxCapacityParam.Value;
+            Properties.MaxSize = maxCapacityParam.GetValue();
 
             return this;
         }
@@ -69,15 +69,15 @@ namespace CfSharp
             return this;
         }
 
-        public AutoScalingGroup MinSize(StackParameter minCapacityParam)
+        public AutoScalingGroup MinSize(IEntityValue minCapacityParam)
         {
-            this.Properties.MinSize = minCapacityParam.Value;
+            this.Properties.MinSize = minCapacityParam.GetValue();
 
             return this;
         }
 
         public AutoScalingGroup Tags(string key, IEntityValue value, bool propergateAtLaunch)
-            => Tags(key, value.Value, propergateAtLaunch);
+            => Tags(key, value.GetValue(), propergateAtLaunch);
 
         public AutoScalingGroup Tags(string key, object value, bool propergateAtLaunch)
         {
@@ -86,9 +86,9 @@ namespace CfSharp
             return this;
         }
 
-        public AutoScalingGroup DesiredCapacity(StackParameter desiredCapacity)
+        public AutoScalingGroup DesiredCapacity(IEntityValue desiredCapacity)
         {
-            this.Properties.DesiredCapacity = desiredCapacity.Value;
+            this.Properties.DesiredCapacity = desiredCapacity.GetValue();
 
             return this;
         }
@@ -110,6 +110,17 @@ namespace CfSharp
 
             return this;
         }
+
+        public AutoScalingGroup LaunchConfigurationName(string launchConfigurationName) => LaunchConfigurationName((object)launchConfigurationName);
+
+        public AutoScalingGroup LaunchConfigurationName(object launchConfigurationName)
+        {
+            Properties.LaunchConfigurationName = launchConfigurationName;
+            return this;
+        }
+
+        public AutoScalingGroup LaunchConfigurationName(IEntityValue launchConfigurationName) 
+            => LaunchConfigurationName(launchConfigurationName.GetValue());
 
         public string GetName()
         {
@@ -144,7 +155,7 @@ namespace CfSharp
 
         public List<object> VPCZoneIdentifier { get; set; } = new List<object>();
 
-        public IEntityValue LaunchConfigurationName { get; set; }
+        public object LaunchConfigurationName { get; set; }
 
         public List<NotificationConfiguration> NotificationConfigurations { get; set; } = new List<NotificationConfiguration>();
     }

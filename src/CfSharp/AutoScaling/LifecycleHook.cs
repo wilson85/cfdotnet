@@ -6,7 +6,7 @@
 
         public LifecycleHookProperties Properties { get; set; } = new LifecycleHookProperties();
 
-        public LifecycleHook AutoScalingGroupName(IEntityValue autoScalingGroupName) => AutoScalingGroupName(autoScalingGroupName.Value);
+        public LifecycleHook AutoScalingGroupName(IEntityValue autoScalingGroupName) => AutoScalingGroupName(autoScalingGroupName.GetValue());
 
         public LifecycleHook AutoScalingGroupName(object autoScalingGroupName)
         {

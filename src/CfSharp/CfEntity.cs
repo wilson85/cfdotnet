@@ -19,14 +19,16 @@ namespace CfSharp
 
     public class StringEntityValue : IEntityValue
     {
+        private readonly string _value;
+
         public StringEntityValue(string value)
         {
-            Value = value;
+            _value = value;
         }
 
-        public object Value
+        public object GetValue()
         {
-            get; set;
+            return _value;
         }
     }
 }

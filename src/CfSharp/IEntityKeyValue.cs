@@ -15,7 +15,7 @@
 
     public interface IEntityValue
     {
-        object Value { get; }
+        object GetValue();
     }
 
     public class EntityReference

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace CfSharp
 {
-    public class LoadBalancer : IEntity
+    public class LoadBalancer : IEntity, IEntityValue
     {
         public LoadBalancer(string name, Stack stack)
         {
@@ -17,8 +17,9 @@ namespace CfSharp
 
         public LoadBalancerProperties Properties { get; } = new LoadBalancerProperties();
 
+
         public LoadBalancer Tags(string key, IEntityValue value)
-            => Tags(key, value.Value);
+            => Tags(key, value.GetValue());
 
         public LoadBalancer Tags(string key, object value)
         {
@@ -33,6 +34,19 @@ namespace CfSharp
             return this;
         }
 
+        public LoadBalancer Subnets(object subnet)
+        {
+            Properties.Subnets.Add(subnet);
+            return this;
+        }
+
+        public LoadBalancer SecurityGroups(object securityGroup)
+        {
+            Properties.SecurityGroups.Add(securityGroup);
+
+            return this;
+        }
+
 
         private Stack _stack;
         private readonly string _name;
@@ -42,7 +56,7 @@ namespace CfSharp
         /// </summary>
         public LoadBalancer IdleTimeoutSeconds(int seconds)
         {
-            this.Properties.LoadBalancerAttributes.Add(new KeyValuePair("idle_timeout.timeout_seconds", new StringEntityValue(seconds.ToString())));
+            this.Properties.LoadBalancerAttributes.Add(new KeyValuePair("idle_timeout.timeout_seconds", seconds.ToString()));
 
             return this;
         }
@@ -60,6 +74,11 @@ namespace CfSharp
         {
             return _name;
         }
+
+        public object GetValue()
+        {
+            return new EntityReference(_name);
+        }
     }
 
     public class LoadBalancerProperties
@@ -68,11 +87,11 @@ namespace CfSharp
 
         public Tags Tags { get; set; } = new Tags();
 
-        public List<IEntityValue> SecurityGroups { get; set; } = new List<IEntityValue>();
+        public List<object> SecurityGroups { get; set; } = new List<object>();
         
         public string Scheme { get; set; }
 
-        public List<IEntityValue> Subnets { get; set; } = new List<IEntityValue>();
+        public List<object> Subnets { get; set; } = new List<object>();
 
     }
 

@@ -37,8 +37,13 @@ namespace CfSharp
         public Stack LoadBalancer(string name, Action<LoadBalancer> config)
         {
             LoadBalancer loadBalancer = new LoadBalancer(name, this);
-            config(loadBalancer);
+            config?.Invoke(loadBalancer);
             return this;
+        }
+
+        public LoadBalancer LoadBalancer(string name)
+        {
+            return new LoadBalancer(name, this);
         }
 
         public StackParameter Parameter(string name, string type, Action<StackParameter> config = null)
@@ -58,8 +63,21 @@ namespace CfSharp
         {
             // if exists return existing
 
-            return new TargetGroup(name);
+            return new TargetGroup(this, name);
         }
+
+        public Listener Listener(string name)
+        {
+            return new Listener(this, name);
+        }
+
+        public LaunchConfiguration LaunchConfiguration(string name)
+        {
+            return new LaunchConfiguration(this, name);
+        }
+
+
+
 
         public AutoScalingGroup AutoScalingGroup(string name, Action<AutoScalingGroup> config)
         {
@@ -67,6 +85,12 @@ namespace CfSharp
             config(autoScalingGroup);
             return autoScalingGroup;
         }
+
+        public AutoScalingGroup AutoScalingGroup(string name)
+        {
+            return new AutoScalingGroup(this, name);
+        }
+
 
         public Alarm Alarm(string name, Action<Alarm> config)
         {
@@ -100,21 +124,17 @@ namespace CfSharp
         public virtual string Default { get; set; }
 
         [JsonIgnore]
-        public virtual object Value
-        {
-            get
-            {
-                return new StackParameterValue(this);
-            }
-        }
-
-        [JsonIgnore]
         public virtual string Name { get; }
 
         public StackParameter(string name, string type)
         {
             Type = type;
             Name = name;
+        }
+
+        public object GetValue()
+        {
+            return new StackParameterValue(this);
         }
     }
 

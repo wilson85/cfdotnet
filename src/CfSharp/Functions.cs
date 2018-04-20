@@ -13,7 +13,7 @@ namespace CfSharp
             {
                 if (item is IEntityValue val)
                 {
-                    newObjects.Add(val.Value);
+                    newObjects.Add(val.GetValue());
                 }
                 else
                 {

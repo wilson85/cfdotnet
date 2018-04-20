@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CfSharp
 {
-    public class Listener : IEntity
+    public class Listener : IEntity, IEntityValue
     {
         private readonly string _name;
         private readonly Stack _stack;
@@ -19,10 +19,10 @@ namespace CfSharp
 
         public ListenerProperties Properties { get; set; } = new ListenerProperties();
 
-        public Listener Certificate(string arn)
-            => Certificate(new StringEntityValue(arn));
+        public Listener Certificates(string arn)
+            => Certificates(new StringEntityValue(arn));
 
-        public Listener Certificate(IEntityValue value)
+        public Listener Certificates(IEntityValue value)
         {
             Properties.Certificates.Add(new ListenerCertificate(value));
 
@@ -30,18 +30,18 @@ namespace CfSharp
         }
 
         public Listener LoadBalancerArn(IEntityValue arn)
-         => LoadBalancerArn(arn.Value);
+         => LoadBalancerArn(arn.GetValue());
 
-        public Listener LoadBalancerArn(object arn)
+        public Listener LoadBalancerArn(object loadBalancerArn)
         {
-            Properties.LoadBalancerArn = arn;
+            Properties.LoadBalancerArn = loadBalancerArn;
 
             return this;
         }
 
         public Listener DefaultAction(IEntityValue targetGroupArn, object type)
         {
-            Properties.DefaultActions = new ListenerAction(targetGroupArn.Value, type);
+            Properties.DefaultActions = new ListenerAction(targetGroupArn.GetValue(), type);
 
             return this;
         }
@@ -62,9 +62,9 @@ namespace CfSharp
 
         public Listener Rules(string name, Action<ListenerRule> config)
         {
-            var rule = new ListenerRule(name,_stack);
+            var rule = new ListenerRule(name, _stack);
             config(rule);
-            
+
             return this;
         }
 
@@ -72,13 +72,19 @@ namespace CfSharp
         {
             return _name;
         }
+
+        public object GetValue()
+        {
+            return new EntityReference(_name);
+        }
     }
 
     public class ListenerAction
     {
         public ListenerAction(object targetGroupArn, object type)
         {
-
+            TargetGroupArn = targetGroupArn;
+            Type = type;
         }
 
         public object TargetGroupArn { get; set; }
@@ -104,7 +110,7 @@ namespace CfSharp
     {
         public ListenerCertificate(IEntityValue value)
         {
-            CertificateArn = value.Value;
+            CertificateArn = value.GetValue();
         }
 
         public object CertificateArn { get; }

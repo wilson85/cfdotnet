@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CfSharp
 {
@@ -7,8 +8,9 @@ namespace CfSharp
     {
         private readonly string _name;
 
-        public TargetGroup(string name)
+        public TargetGroup(Stack stack, string name)
         {
+            stack.Resources.Add(name, this);
             _name = name;
         }
 
@@ -16,7 +18,8 @@ namespace CfSharp
 
         public TargetGroupProperties Properties { get; set; } = new TargetGroupProperties();
 
-        public object Value  => new EntityReference(_name);
+        [JsonIgnore]
+        public object Value => new EntityReference(_name);
 
         public TargetGroup Tags(string name, object value)
         {
@@ -25,7 +28,7 @@ namespace CfSharp
             return this;
         }
 
-        public TargetGroup Tags(string name, IEntityValue value) => Tags(name, value.Value);
+        public TargetGroup Tags(string name, IEntityValue value) => Tags(name, value.GetValue());
 
         public TargetGroup Protocol(Protocol protocol)
         {
@@ -34,7 +37,7 @@ namespace CfSharp
             return this;
         }
 
-        public TargetGroup Port(IEntityValue port) => Port((int)port.Value);
+        public TargetGroup Port(IEntityValue port) => Port((int)port.GetValue());
 
         public TargetGroup Port(int port)
         {
@@ -50,7 +53,7 @@ namespace CfSharp
             return this;
         }
 
-        public TargetGroup VpcId(IEntityValue vpcId) => VpcId(vpcId.Value);
+        public TargetGroup VpcId(IEntityValue vpcId) => VpcId(vpcId.GetValue());
 
         public TargetGroup HealthCheckIntervalSeconds(int seconds)
         {
@@ -141,6 +144,11 @@ namespace CfSharp
         public string GetName()
         {
             return _name;
+        }
+
+        public object GetValue()
+        {
+            return new EntityReference(_name);
         }
     }
 
