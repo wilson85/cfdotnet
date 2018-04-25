@@ -158,6 +158,8 @@ namespace CfSharp
         public object LaunchConfigurationName { get; set; }
 
         public List<NotificationConfiguration> NotificationConfigurations { get; set; } = new List<NotificationConfiguration>();
+
+        public object AutoScalingGroupName { get; set; }
     }
 
     public class AutoScalingGroupTag : Tag

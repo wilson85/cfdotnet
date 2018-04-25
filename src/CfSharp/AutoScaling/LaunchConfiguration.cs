@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CfSharp
 {
@@ -7,6 +8,9 @@ namespace CfSharp
         public string Type { get; set; } = "AWS::AutoScaling::LaunchConfiguration";
 
         public LaunchConfigurationProperties Properties { get; set; } = new LaunchConfigurationProperties();
+
+        
+        public MetaData Metadata { get; set; } = new MetaData();
 
         private readonly string _name;
 
@@ -141,5 +145,8 @@ namespace CfSharp
 
             public object VolumeType { get; set; }
         }
+
+        
+
     }
 }
