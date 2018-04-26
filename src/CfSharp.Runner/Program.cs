@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.CloudFormation;
@@ -11,10 +12,14 @@ namespace CfSharp.Runner
         public static async Task Main(string[] args)
         {
             Stack stack = new Stack("test");
-            stack.LoadBalancer("lb", lb => lb.Scheme(Scheme.InternetFacing));
+            var cfg = stack.LaunchConfiguration("lc")
+                .Metadata.Init.Config("config1");
+
+            cfg.Command("print1").Command("print \"hello world\"");
+
 
             string json = stack.ToJson();
-            
+
             AmazonCloudFormationClient client = new AmazonCloudFormationClient(RegionEndpoint.EUWest1);
 
             try
