@@ -1,18 +1,23 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace CfSharp
 {
     public class LaunchConfiguration : IEntity, IEntityValue
     {
-        public string Type { get; set; } = "AWS::AutoScaling::LaunchConfiguration";
+        public const string CFType = "AWS::AutoScaling::LaunchConfiguration";
+
+        private readonly string _name;
+
+        public string Type => CFType;
 
         public LaunchConfigurationProperties Properties { get; set; } = new LaunchConfigurationProperties();
-
         
         public MetaData Metadata { get; set; } = new MetaData();
 
-        private readonly string _name;
+        public LaunchConfiguration()
+        {
+
+        }
 
         public LaunchConfiguration(Stack stack, string name)
         {

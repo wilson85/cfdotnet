@@ -10,6 +10,8 @@ namespace CfSharp
 
         public Dictionary<string, StackParameter> Parameters = new Dictionary<string, StackParameter>();
 
+        public Dictionary<string, Dictionary<string, Dictionary<string,object>>> Mappings = new Dictionary<string, Dictionary<string, Dictionary<string, object>>>();
+
         /// <summary>
         /// This is a list of inbuilt parameters which we need available but we dont want to output into our json
         /// </summary>
@@ -104,47 +106,6 @@ namespace CfSharp
             config(this);
 
             return this;
-        }
-    }
-
-    public class StackParameter : IEntityValue
-    {
-        public virtual string Type { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public virtual int? MinValue { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public virtual int? MaxValue { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public virtual string Description { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public virtual string Default { get; set; }
-
-        [JsonIgnore]
-        public virtual string Name { get; }
-
-        public StackParameter(string name, string type)
-        {
-            Type = type;
-            Name = name;
-        }
-
-        public object GetValue()
-        {
-            return new StackParameterValue(this);
-        }
-    }
-
-    public class StackParameterValue
-    {
-        public string Ref { get; set; }
-
-        public StackParameterValue(StackParameter param)
-        {
-            Ref = param.Name;
         }
     }
 }

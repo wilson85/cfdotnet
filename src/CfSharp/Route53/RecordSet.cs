@@ -4,7 +4,8 @@ namespace CfSharp
 {
     public class RecordSet
     {
-        public string Type { get; } = "AWS::Route53::RecordSet";
+        public const string CFType = "AWS::Route53::RecordSet";
+        public string Type = CFType;
 
         public RecordSetProperties Properties { get; set; } = new RecordSetProperties();
 
@@ -41,7 +42,7 @@ namespace CfSharp
 
             public object Type { get; set; }
 
-            public RecordSetAliasTarget AliasTarget { get; set; } = new RecordSetAliasTarget(); 
+            public RecordSetAliasTarget AliasTarget { get; set; } = new RecordSetAliasTarget();
         }
 
         public class RecordSetAliasTarget

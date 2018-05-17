@@ -1,12 +1,19 @@
-﻿namespace CfSharp.AutoScaling
+﻿namespace CfSharp
 {
     public class LifecycleHook
     {
-        public string Type { get; set; } = "AWS::AutoScaling::LifecycleHook";
+        public const string CFType = "AWS::AutoScaling::LifecycleHook";
+
+        public string Type => CFType;
 
         public LifecycleHookProperties Properties { get; set; } = new LifecycleHookProperties();
 
         public LifecycleHook AutoScalingGroupName(IEntityValue autoScalingGroupName) => AutoScalingGroupName(autoScalingGroupName.GetValue());
+
+        public LifecycleHook()
+        {
+
+        }
 
         public LifecycleHook AutoScalingGroupName(object autoScalingGroupName)
         {

@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace CfSharp
 {
     public class LoadBalancer : IEntity, IEntityValue
     {
+        public string Type => CFType;
+        public const string CFType = "AWS::ElasticLoadBalancingV2::LoadBalancer";
+
+        public LoadBalancer()
+        {
+
+        }
+
         public LoadBalancer(string name, Stack stack)
         {
             _stack = stack;
@@ -13,7 +22,6 @@ namespace CfSharp
             _name = name;
         }
 
-        public string Type { get; } = "AWS::ElasticLoadBalancingV2::LoadBalancer";
 
         public LoadBalancerProperties Properties { get; } = new LoadBalancerProperties();
 
@@ -91,6 +99,7 @@ namespace CfSharp
         
         public string Scheme { get; set; }
 
+        [JsonConverter(typeof(SingleObjectOrArrayConverter))]
         public List<object> Subnets { get; set; } = new List<object>();
 
     }

@@ -4,8 +4,17 @@ namespace CfSharp
 {
     public class Alarm : IEntity
     {
+        public const string CFType = "AWS::CloudWatch::Alarm";
+
+        public string Type => CFType;
+
         private readonly string _name;
         private readonly Stack _stack;
+
+        public Alarm()
+        {
+
+        }
 
         public Alarm(Stack stack, string name)
         {
@@ -14,7 +23,6 @@ namespace CfSharp
             _stack.Resources.Add(_name, this);
         }
 
-        public string Type { get; } = "AWS::CloudWatch::Alarm";
 
         public AlarmProperties Properties { get; } = new AlarmProperties();
 

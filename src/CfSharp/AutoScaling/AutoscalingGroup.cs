@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace CfSharp
 {
+    //[Newtonsoft.Json.JsonConverter(typeof(JsonSubTypes.JsonSubtypes), "Type")]
     public class AutoScalingGroup : IEntity
     {
+        public const string CFType = "AWS::AutoScaling::AutoScalingGroup";
+        public string Type => CFType;
+
         private readonly Stack _stack;
         private readonly string _name;
+
+        public AutoScalingGroup()
+        {
+
+        }
 
         public AutoScalingGroup(Stack stack, string name)
         {
@@ -17,7 +27,6 @@ namespace CfSharp
             _stack.Resources.Add(name, this);
         }
 
-        public string Type { get; } = "AWS::AutoScaling::AutoScalingGroup";
 
         public AutoScalingGroupProperties Properties { get; } = new AutoScalingGroupProperties();
 
@@ -153,6 +162,7 @@ namespace CfSharp
 
         public List<AutoScalingGroupTag> Tags { get; set; } = new List<AutoScalingGroupTag>();
 
+        [JsonConverter(typeof(SingleObjectOrArrayConverter))]
         public List<object> VPCZoneIdentifier { get; set; } = new List<object>();
 
         public object LaunchConfigurationName { get; set; }

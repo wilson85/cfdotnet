@@ -5,8 +5,16 @@ namespace CfSharp
 {
     public class ListenerRule : IEntity
     {
+        public const string CFType = "AWS::ElasticLoadBalancingV2::ListenerRule";
+        public string Type => CFType;
+
         private readonly string _name;
         private readonly Stack _stack;
+
+        public ListenerRule()
+        {
+
+        }
 
         public ListenerRule(string name, Stack stack)
         {
@@ -15,7 +23,6 @@ namespace CfSharp
             _stack.Resources.Add(name, this);
         }
 
-        public string Type { get; } = "AWS::ElasticLoadBalancingV2::ListenerRule";
 
         public ListenerRuleProperties Properties { get; set; } = new ListenerRuleProperties();
 

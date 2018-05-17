@@ -6,7 +6,14 @@ namespace CfSharp
 {
     public class TargetGroup : IEntity, IEntityValue
     {
+        public const string CFTtype = "AWS::ElasticLoadBalancingV2::TargetGroup";
+        public string Type => CFTtype;
         private readonly string _name;
+
+        public TargetGroup()
+        {
+
+        }
 
         public TargetGroup(Stack stack, string name)
         {
@@ -14,7 +21,6 @@ namespace CfSharp
             _name = name;
         }
 
-        public string Type { get; } = "AWS::ElasticLoadBalancingV2::TargetGroup";
 
         public TargetGroupProperties Properties { get; set; } = new TargetGroupProperties();
 

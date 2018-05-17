@@ -20,6 +20,11 @@
 
     public class EntityReference
     {
+        public EntityReference()
+        {
+
+        }
+
         public EntityReference(object @ref)
         {
             Ref = @ref;
