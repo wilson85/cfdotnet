@@ -45,7 +45,7 @@ namespace CfSharp
 
         public LoadBalancer LoadBalancer(string name)
         {
-            return new LoadBalancer(name, this);
+            return Resources[name] as LoadBalancer ?? new LoadBalancer(name, this);
         }
 
         public StackParameter Parameter(string name, string type, Action<StackParameter> config = null)

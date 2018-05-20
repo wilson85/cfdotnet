@@ -99,7 +99,7 @@ namespace CfSharp
         
         public string Scheme { get; set; }
 
-        [JsonConverter(typeof(SingleObjectOrArrayConverter))]
+        [JsonConverter(typeof(CfPrimitiveJsonConverter))]
         public List<object> Subnets { get; set; } = new List<object>();
 
     }

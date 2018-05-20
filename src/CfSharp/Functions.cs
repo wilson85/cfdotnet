@@ -38,6 +38,11 @@ namespace CfSharp
 
     public class FnBase64
     {
+        public FnBase64()
+        {
+
+        }
+
         public FnBase64(string str)
         {
             Value = str;
@@ -48,30 +53,43 @@ namespace CfSharp
             Value = obj;
         }
 
+        //[JsonConverter(typeof(CfPrimitiveJsonConverter))]
         [JsonProperty(PropertyName = "Fn::Base64")]
         public object Value { get; set; }
     }
 
     public class FnJoin
     {
+        public FnJoin()
+        {
+
+        }
+
         public FnJoin(string delimiter, params object[] values)
         {
-            Array = new object[] { delimiter, values };
+            Array = new List<object>() { delimiter, values };
         }
 
 
+        //[JsonConverter(typeof(CfPrimitiveJsonConverter))]
         [JsonProperty(PropertyName = "Fn::Join")]
-        public object Array { get; set; }
+        public List<object> Array { get; set; }
     }
 
 
     public class FnGetAtt
     {
+        public FnGetAtt()
+        {
+
+        }
+
         public FnGetAtt(params string[] strings)
         {
             Array = strings;
         }
 
+        //[JsonConverter(typeof(CfPrimitiveJsonConverter))]
         [JsonProperty(PropertyName = "Fn::GetAtt")]
         public string[] Array { get; set; }
     }

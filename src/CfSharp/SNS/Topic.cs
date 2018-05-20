@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CfSharp
 {
@@ -22,7 +23,14 @@ namespace CfSharp
 
         public class TopicProperties
         {
-            public string Subscription { get; set; }
+            public List<SnsSubscription> Subscription { get; set; }
+        }
+
+        public class SnsSubscription
+        {
+            public object Endpoint { get; set; }
+
+            public object Protocol { get; set; }
         }
     }
 }

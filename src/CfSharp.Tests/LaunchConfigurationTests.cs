@@ -76,7 +76,7 @@ namespace CfSharp.Tests
 
         public AwsSchema LoadSchema()
         {
-            using (var sr = File.OpenText("schema/AutoScalingLaunchConfigSpecification.json"))
+            using (var sr = System.IO.File.OpenText("schema/AutoScalingLaunchConfigSpecification.json"))
             {
                 var serializer = new JsonSerializer();
                 return (AwsSchema)serializer.Deserialize(sr, typeof(AwsSchema));

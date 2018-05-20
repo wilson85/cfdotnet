@@ -1,0 +1,26 @@
+﻿{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Description": "Test for all the different types of property",
+
+  "Resources": {
+    "ApplicationLoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "Subnets": [
+          { "Ref": "Subnets" },
+          "My-Subnet",
+          {
+            "Fn::Join": [
+              "",
+              [
+                "really-complicated",
+                { "Fn::GetAtt": [ "SomeResource", "SomeProperty" ] }
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

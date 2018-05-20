@@ -7,12 +7,30 @@ namespace CfSharp
     {
         [JsonProperty(PropertyName = "AWS::CloudFormation::Init")]
         public Init Init { get; set; } = new Init();
+
+        [JsonProperty(PropertyName = "files")]
+        public Dictionary<string, File> Files { get; set; }
+
+        public Services Services { get; set; }
+
+        public object Comment { get; set; }
+    }
+
+    public class Services
+    {
+        [JsonProperty(PropertyName = "windows")]
+        public Dictionary<string, Service> Windows { get; set; }
+
+        [JsonProperty(PropertyName = "sysvinit")]
+        public Dictionary<string, Service> Sysvinit { get; set; }
     }
 
     public class Init : Dictionary<string, object>
     {
         [JsonProperty(PropertyName = "configSets")]
         public ConfigSets ConfigSets = new ConfigSets();
+
+        public Packages Packages { get; set; }
 
         public Config Config(string name)
         {
@@ -22,6 +40,57 @@ namespace CfSharp
 
             return config;
         }
+    }
+
+
+    public class Service
+    {
+        public object EnsureRunning { get; set; }
+
+        public object Enabled { get; set; }
+
+
+    }
+
+    public class File
+    {
+        public object Content { get; set; }
+
+        public object Source { get; set; }
+
+        public object Encoding { get; set; }
+
+        public object Group { get; set; }
+
+        public object Owner { get; set; }
+
+        public object Mode { get; set; }
+
+        public object Authentication { get; set; }
+
+        public object Context { get; set; }
+    }
+
+    public class Packages
+    {
+        [JsonProperty(PropertyName = "yum")]
+        public Dictionary<string, List<object>> Yum { get; set; }
+
+        [JsonProperty(PropertyName = "rubygems")]
+        public Dictionary<string, List<object>> Rubygems { get; set; }
+
+        [JsonProperty(PropertyName = "rpm")]
+        public Dictionary<string, List<object>> Rpm { get; set; }
+
+        [JsonProperty(PropertyName = "python")]
+        public Dictionary<string, List<object>> Python { get; set; }
+
+        [JsonProperty(PropertyName = "msi")]
+        public Dictionary<string, List<object>> Msi { get; set; }
+
+        [JsonProperty(PropertyName = "apt")]
+        public Dictionary<string, List<object>> Apt { get; set; }
+
     }
 
     public class ConfigSets : Dictionary<string, Config>
